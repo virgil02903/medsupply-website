@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedSupply Express - Medical Equipment & Clinical Supplies</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        tealbrand: {
+                            500: '#0d9488',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Medical & E-commerce Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-full text-slate-800 antialiased selection:bg-sky-500 selection:text-white">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-brand-900 text-slate-200 text-xs py-2 px-4 font-medium">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center space-x-4">
+                <span class="flex items-center"><i class="fa-solid fa-truck-fast text-sky-400 mr-2"></i> Free Express Shipping on orders over $99</span>
+                <span class="hidden md:inline text-slate-500">|</span>
+                <span class="hidden md:flex items-center"><i class="fa-solid fa-shield-halved text-emerald-400 mr-2"></i> FDA Registered &amp; ISO 13485 Certified</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="tel:18005550199" class="hover:text-white transition"><i class="fa-solid fa-phone mr-1"></i> 1-800-MED-SUPPLY</a>
+                <span class="text-slate-600">|</span>
+                <a href="https://codepen.io/pen/" target="_blank" class="text-amber-300 hover:text-amber-200 font-semibold flex items-center bg-amber-500/20 px-2 py-0.5 rounded border border-amber-400/30">
+                    <i class="fa-solid fa-arrow-up-right-from-square mr-1 text-[10px]"></i> Live Presentation Web Link
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Presentation Web Link Banner -->
+    <div class="bg-gradient-to-r from-sky-600 to-brand-700 text-white py-2 px-4 text-xs font-semibold shadow-inner flex justify-center items-center gap-2">
+        <span><i class="fa-solid fa-laptop-medical mr-1"></i> Exam Presentation Demo Link:</span>
+        <a href="https://codepen.io/pen/" target="_blank" class="underline hover:text-sky-200 transition font-bold">
+            https://medsupplyexpress.demo.app
+        </a>
+        <span class="bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider ml-1">Live Online</span>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20 gap-4">
+                
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="resetFilters()">
+                    <div class="w-11 h-11 bg-gradient-to-tr from-brand-600 to-tealbrand-500 rounded-xl flex items-center justify-center text-white shadow-md shadow-sky-500/20">
+                        <i class="fa-solid fa-notes-medical text-2xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold tracking-tight text-slate-900 block leading-tight">MedSupply<span class="text-brand-600">Express</span></span>
+                        <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400 block">Healthcare Equipment</span>
+                    </div>
+                </div>
+
+                <!-- Search Bar (Desktop) -->
+                <div class="hidden md:flex flex-1 max-w-lg mx-6 relative">
+                    <input type="text" id="searchInput" placeholder="Search stethoscopes, gloves, oximeters, masks..." 
+                           class="w-full bg-slate-100 border border-slate-200 rounded-full py-2.5 pl-11 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition"
+                           oninput="handleSearch(this.value)">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400"></i>
+                    <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 top-3 text-slate-400 hover:text-slate-600 text-xs bg-slate-200 hover:bg-slate-300 w-5 h-5 rounded-full items-center justify-center">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Action Controls -->
+                <div class="flex items-center space-x-3 sm:space-x-4">
+                    <a href="https://codepen.io/pen/" target="_blank" class="hidden lg:inline-flex items-center text-xs font-semibold text-slate-600 hover:text-brand-600 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-lg transition">
+                        <i class="fa-solid fa-globe mr-1.5 text-brand-500"></i> Open Live URL
+                    </a>
+
+                    <button onclick="toggleCartModal(true)" class="relative p-2.5 text-slate-700 hover:text-brand-600 hover:bg-slate-100 rounded-full transition flex items-center justify-center">
+                        <i class="fa-solid fa-cart-shopping text-xl"></i>
+                        <span id="cartBadge" class="absolute -top-1 -right-1 bg-brand-600 text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center ring-2 ring-white">0</span>
+                    </button>
+                    
+                    <a href="#catalog" class="hidden sm:inline-flex items-center justify-center px-4 py-2.5 border border-transparent rounded-lg text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 transition shadow-sm">
+                        Order Supplies
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mobile Search Bar -->
+            <div class="pb-3 md:hidden">
+                <div class="relative w-full">
+                    <input type="text" id="searchInputMobile" placeholder="Search medical supplies..." 
+                           class="w-full bg-slate-100 border border-slate-200 rounded-full py-2 pl-10 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                           oninput="handleSearch(this.value)">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-sm"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow">
+        
+        <!-- Hero Section -->
+        <section class="relative bg-gradient-to-b from-sky-50 via-white to-slate-50 border-b border-slate-200 overflow-hidden py-12 md:py-16">
+            <div class="absolute -right-20 -top-20 w-96 h-96 bg-sky-200/40 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute left-10 bottom-0 w-72 h-72 bg-teal-100/50 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-100 text-brand-800 text-xs font-semibold tracking-wide border border-sky-200">
+                            <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+                            Trusted Medical Supply Partner
+                        </div>
+                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                            Essential Clinical Equipment &amp; Supplies <span class="text-brand-600">Delivered Fast.</span>
+                        </h1>
+                        <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                            Serving hospitals, clinics, and healthcare professionals nationwide with certified medical grade PPE, diagnostic instruments, and first-aid supplies.
+                        </p>
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
+                            <a href="#catalog" class="w-full sm:w-auto px-6 py-3.5 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 shadow-md shadow-brand-500/20 transition text-center">
+                                <i class="fa-solid fa-boxes-packing mr-2"></i> Browse Catalog
+                            </a>
+                            <button onclick="filterByCategory('PPE')" class="w-full sm:w-auto px-6 py-3.5 bg-white text-slate-700 font-semibold rounded-xl border border-slate-300 hover:bg-slate-50 transition text-center">
+                                Shop Bulk PPE
+                            </button>
+                        </div>
+                        
+                        <!-- Quick Stats -->
+                        <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-200/80 max-w-lg mx-auto lg:mx-0">
+                            <div>
+                                <p class="text-xl font-bold text-slate-900">100%</p>
+                                <p class="text-xs text-slate-500">Medical Grade</p>
+                            </div>
+                            <div>
+                                <p class="text-xl font-bold text-slate-900">24-48 hr</p>
+                                <p class="text-xs text-slate-500">Express Delivery</p>
+                            </div>
+                            <div>
+                                <p class="text-xl font-bold text-slate-900">50,000+</p>
+                                <p class="text-xs text-slate-500">Clinics Served</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hero Banner Visual -->
+                    <div class="lg:col-span-5 flex justify-center">
+                        <div class="relative w-full max-w-md bg-white rounded-2xl p-4 shadow-xl border border-slate-100">
+                            <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80" 
+                                 alt="Medical supplies banner" 
+                                 class="w-full h-64 sm:h-72 object-cover rounded-xl shadow-inner">
+                            <div class="absolute -bottom-4 -left-4 bg-slate-900 text-white p-4 rounded-xl shadow-lg border border-slate-800 flex items-center space-x-3">
+                                <div class="bg-emerald-500/20 text-emerald-400 p-3 rounded-lg">
+                                    <i class="fa-solid fa-certificate text-2xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-medium text-slate-400">Guaranteed Standard</p>
+                                    <p class="text-sm font-bold text-white">ISO 13485 Certified</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust Features Bar -->
+        <section class="bg-white border-b border-slate-200 py-6">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-sky-100 text-brand-600 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-truck-fast text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-slate-900">Express Delivery</h4>
+                            <p class="text-xs text-slate-500">Same day dispatch on order</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center md:justify-start space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-shield-check text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-slate-900">FDA Approved</h4>
+                            <p class="text-xs text-slate-500">Strict hospital-grade standards</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center md:justify-start space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-headset text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-slate-900">24/7 Clinical Support</h4>
+                            <p class="text-xs text-slate-500">Dedicated customer helpline</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center md:justify-start space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-lock text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-slate-900">Secure Payment</h4>
+                            <p class="text-xs text-slate-500">256-Bit SSL Encryption</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Catalog Section -->
+        <section id="catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            
+            <!-- Section Header & Filter Controls -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 pb-6 border-b border-slate-200">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Clinical Product Catalog</h2>
+                    <p class="text-slate-500 text-sm mt-1">High-quality diagnostic devices, wound care, and protective apparel</p>
+                </div>
+
+                <!-- Sorting and Filter Controls -->
+                <div class="flex flex-wrap items-center gap-3">
+                    <!-- Sorting Dropdown -->
+                    <div class="flex items-center space-x-2">
+                        <label for="sortSelect" class="text-xs font-medium text-slate-500 whitespace-nowrap"><i class="fa-solid fa-arrow-down-wide-short mr-1"></i> Sort by:</label>
+                        <select id="sortSelect" onchange="handleSort(this.value)" class="bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 shadow-sm cursor-pointer">
+                            <option value="popular">Popularity</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="rating">Customer Rating</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Filter Tabs -->
+            <div class="flex items-center space-x-2 overflow-x-auto pb-4 mb-8 custom-scrollbar">
+                <button onclick="filterByCategory('All')" class="category-btn active px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition bg-brand-600 text-white shadow-sm" data-category="All">
+                    All Products
+                </button>
+                <button onclick="filterByCategory('Diagnostic')" class="category-btn px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200" data-category="Diagnostic">
+                    <i class="fa-solid fa-stethoscope mr-1.5 text-brand-500"></i> Diagnostic Tools
+                </button>
+                <button onclick="filterByCategory('PPE')" class="category-btn px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200" data-category="PPE">
+                    <i class="fa-solid fa-head-side-mask mr-1.5 text-brand-500"></i> Personal Protection (PPE)
+                </button>
+                <button onclick="filterByCategory('Wound Care')" class="category-btn px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200" data-category="Wound Care">
+                    <i class="fa-solid fa-bandage mr-1.5 text-brand-500"></i> First Aid &amp; Wound Care
+                </button>
+                <button onclick="filterByCategory('Surgical')" class="category-btn px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200" data-category="Surgical">
+                    <i class="fa-solid fa-scissors mr-1.5 text-brand-500"></i> Surgical Instruments
+                </button>
+            </div>
+
+            <!-- Active Filters Status -->
+            <div id="filterStatus" class="hidden mb-6 flex items-center justify-between bg-sky-50 border border-sky-200 rounded-lg p-3 text-sm text-sky-800">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-filter"></i>
+                    <span>Showing results for: <strong id="filterStatusText">All</strong></span>
+                </div>
+                <button onclick="resetFilters()" class="text-xs text-brand-600 hover:text-brand-800 font-semibold underline">Reset All Filters</button>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Dynamic product cards will be inserted here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="noProductsFound" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200 my-8">
+                <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-slate-400 mb-4">
+                    <i class="fa-solid fa-magnifying-glass text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800">No medical products found</h3>
+                <p class="text-slate-500 text-sm mt-1 max-w-sm mx-auto">We couldn't find any items matching your current filter criteria. Try searching for something else.</p>
+                <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-brand-600 text-white rounded-lg text-sm font-semibold hover:bg-brand-700 transition">
+                    Reset Search &amp; Filters
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <!-- Col 1 -->
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-9 h-9 bg-brand-600 rounded-lg flex items-center justify-center text-white">
+                            <i class="fa-solid fa-notes-medical text-lg"></i>
+                        </div>
+                        <span class="text-lg font-bold text-white tracking-tight">MedSupply Express</span>
+                    </div>
+                    <p class="text-xs leading-relaxed text-slate-400">
+                        Authorized distributor of clinical grade medical equipment, surgical tools, and protective apparel for healthcare professionals and medical facilities.
+                    </p>
+                    <div class="flex space-x-3 pt-2">
+                        <a href="#" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-brand-600 transition"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-brand-600 transition"><i class="fa-brands fa-twitter text-xs"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-brand-600 transition"><i class="fa-brands fa-linkedin-in text-xs"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2 -->
+                <div>
+                    <h3 class="text-xs font-semibold text-white uppercase tracking-wider mb-4">Quick Links</h3>
+                    <ul class="space-y-2.5 text-sm">
+                        <li><a href="#catalog" onclick="filterByCategory('Diagnostic')" class="hover:text-white transition">Diagnostic Equipment</a></li>
+                        <li><a href="#catalog" onclick="filterByCategory('PPE')" class="hover:text-white transition">Protective Gear (PPE)</a></li>
+                        <li><a href="#catalog" onclick="filterByCategory('Wound Care')" class="hover:text-white transition">Wound &amp; First Aid</a></li>
+                        <li><a href="#catalog" onclick="filterByCategory('Surgical')" class="hover:text-white transition">Surgical Shears &amp; Tools</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3 -->
+                <div>
+                    <h3 class="text-xs font-semibold text-white uppercase tracking-wider mb-4">Compliance &amp; Quality</h3>
+                    <ul class="space-y-2.5 text-sm">
+                        <li><a href="#" class="hover:text-white transition">FDA Registration Specs</a></li>
+                        <li><a href="#" class="hover:text-white transition">ISO 13485 Standards</a></li>
+                        <li><a href="#" class="hover:text-white transition">Bulk Hospital Procurement</a></li>
+                        <li><a href="#" class="hover:text-white transition">Return &amp; Exchange Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4 -->
+                <div>
+                    <h3 class="text-xs font-semibold text-white uppercase tracking-wider mb-4">Support &amp; Location</h3>
+                    <p class="text-xs text-slate-400 mb-2"><i class="fa-solid fa-location-dot text-brand-500 mr-2"></i> 100 Medical Plaza, Suite 400, Chicago, IL</p>
+                    <p class="text-xs text-slate-400 mb-2"><i class="fa-solid fa-envelope text-brand-500 mr-2"></i> support@medsupplyexpress.com</p>
+                    <p class="text-xs text-slate-400 mb-4"><i class="fa-solid fa-phone text-brand-500 mr-2"></i> (800) 555-0199</p>
+                    <div class="p-3 bg-slate-800 rounded-lg border border-slate-700">
+                        <span class="text-[11px] text-emerald-400 font-semibold block"><i class="fa-solid fa-circle text-[8px] mr-1.5 animate-pulse"></i> Clinical Reps Available</span>
+                        <span class="text-[10px] text-slate-400">Average wait time: &lt; 2 minutes</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-slate-800 text-center md:flex md:justify-between md:items-center text-xs text-slate-500">
+                <p>&copy; 2026 MedSupply Express. All rights reserved. For professional medical use.</p>
+                <div class="flex justify-center space-x-4 mt-4 md:mt-0">
+                    <span>Privacy Policy</span>
+                    <span>•</span>
+                    <span>Terms of Service</span>
+                    <span>•</span>
+                    <span>Regulatory Information</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- PRODUCT DETAIL / QUICK VIEW MODAL -->
+    <div id="quickViewModal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl border border-slate-200 transform transition-all relative">
+            <button onclick="closeQuickView()" class="absolute top-4 right-4 z-10 w-9 h-9 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-600 transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div id="quickViewContent" class="p-6 md:p-8">
+                <!-- Inserted via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- SHOPPING CART SLIDE-OVER DRAWER -->
+    <div id="cartModal" class="fixed inset-0 z-50 hidden overflow-hidden">
+        <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-xs transition-opacity" onclick="toggleCartModal(false)"></div>
+        
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+                <!-- Cart Header -->
+                <div class="p-6 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-cart-shopping text-brand-600 text-xl"></i>
+                        <h2 class="text-lg font-bold text-slate-900">Your Cart</h2>
+                        <span id="cartCountBadge" class="bg-sky-100 text-brand-700 text-xs font-bold px-2 py-0.5 rounded-full">0 items</span>
+                    </div>
+                    <button onclick="toggleCartModal(false)" class="text-slate-400 hover:text-slate-600 p-2 rounded-lg hover:bg-slate-200/50 transition">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Free Shipping Progress Indicator -->
+                <div class="bg-sky-50 px-6 py-3 border-b border-sky-100">
+                    <div class="flex justify-between text-xs font-medium text-slate-700 mb-1" id="shippingProgressText">
+                        <span>Free Shipping Progress</span>
+                        <span id="shippingDiffText">$99.00 away</span>
+                    </div>
+                    <div class="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                        <div id="shippingProgressBar" class="bg-brand-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Cart Items List Container -->
+                <div id="cartItemsList" class="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
+                    <!-- Dynamic cart items JS -->
+                </div>
+
+                <!-- Cart Summary Footer -->
+                <div class="p-6 bg-slate-50 border-t border-slate-200 space-y-4">
+                    
+                    <!-- Promo Code Input -->
+                    <div class="flex gap-2">
+                        <input type="text" id="promoInput" placeholder="Promo code (e.g., MED10)" class="flex-1 uppercase bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <button onclick="applyPromoCode()" class="px-3 py-2 bg-slate-800 text-white rounded-lg text-xs font-semibold hover:bg-slate-900 transition">Apply</button>
+                    </div>
+                    <p id="promoMessage" class="hidden text-[11px] font-medium"></p>
+
+                    <!-- Calculations -->
+                    <div class="space-y-1.5 text-xs text-slate-600">
+                        <div class="flex justify-between">
+                            <span>Subtotal</span>
+                            <span id="cartSubtotal" class="font-medium text-slate-900">$0.00</span>
+                        </div>
+                        <div id="discountRow" class="flex justify-between text-emerald-600 font-medium hidden">
+                            <span>Discount</span>
+                            <span id="cartDiscount">-$0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Estimated Shipping</span>
+                            <span id="cartShipping" class="font-medium text-slate-900">$0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Estimated Tax (8%)</span>
+                            <span id="cartTax" class="font-medium text-slate-900">$0.00</span>
+                        </div>
+                        <div class="flex justify-between text-base font-bold text-slate-900 pt-2 border-t border-slate-200">
+                            <span>Total</span>
+                            <span id="cartTotal" class="text-brand-600">$0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Checkout Button -->
+                    <button id="checkoutBtn" onclick="openCheckoutModal()" class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-md transition flex items-center justify-center space-x-2">
+                        <span>Proceed to Checkout</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKOUT SIMULATION MODAL -->
+    <div id="checkoutModal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl border border-slate-200">
+            
+            <!-- Modal Header -->
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-shield-heart text-brand-400 text-xl"></i>
+                    <h3 class="font-bold text-lg">Secure Order Checkout</h3>
+                </div>
+                <button onclick="closeCheckoutModal()" class="text-slate-400 hover:text-white text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-6 md:p-8 space-y-6">
+                <!-- Form Container -->
+                <form id="checkoutForm" onsubmit="handlePlaceOrder(event)" class="space-y-6">
+                    
+                    <!-- Shipping Address Section -->
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center">
+                            <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs mr-2">1</span>
+                            Shipping Address
+                        </h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">First Name</label>
+                                <input type="text" required placeholder="Dr. Sarah" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Last Name</label>
+                                <input type="text" required placeholder="Jenkins" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Facility / Street Address</label>
+                                <input type="text" required placeholder="123 Health Ave, Suite 200" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">City</label>
+                                <input type="text" required placeholder="Chicago" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">ZIP Code</label>
+                                <input type="text" required placeholder="60601" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method Section -->
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center">
+                            <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs mr-2">2</span>
+                            Payment Method
+                        </h4>
+                        <div class="grid grid-cols-2 gap-3 mb-3">
+                            <label class="border border-brand-500 bg-brand-50/50 rounded-xl p-3 flex items-center cursor-pointer">
+                                <input type="radio" name="payment" checked class="text-brand-600 focus:ring-brand-500">
+                                <span class="ml-2 text-xs font-semibold text-slate-800"><i class="fa-solid fa-credit-card mr-1"></i> Credit / Debit Card</span>
+                            </label>
+                            <label class="border border-slate-200 rounded-xl p-3 flex items-center cursor-pointer hover:bg-slate-50">
+                                <input type="radio" name="payment" class="text-brand-600 focus:ring-brand-500">
+                                <span class="ml-2 text-xs font-semibold text-slate-800"><i class="fa-solid fa-file-invoice mr-1"></i> Medical PO / Invoice</span>
+                            </label>
+                        </div>
+                        <div class="space-y-3">
+                            <input type="text" required placeholder="Card Number (4242 •••• •••• 4242)" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="text" required placeholder="MM / YY" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                                <input type="text" required placeholder="CVC" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Summary Box -->
+                    <div class="p-4 bg-slate-100 rounded-xl text-xs space-y-1.5">
+                        <div class="flex justify-between font-medium text-slate-700">
+                            <span>Items Total</span>
+                            <span id="checkoutSubtotal">$0.00</span>
+                        </div>
+                        <div class="flex justify-between font-medium text-slate-700">
+                            <span>Express Medical Shipping</span>
+                            <span id="checkoutShipping">$0.00</span>
+                        </div>
+                        <div class="flex justify-between font-bold text-slate-900 text-sm pt-2 border-t border-slate-200">
+                            <span>Final Amount Due</span>
+                            <span id="checkoutTotal" class="text-brand-600">$0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-end space-x-3 pt-2">
+                        <button type="button" onclick="closeCheckoutModal()" class="px-5 py-2.5 border border-slate-300 text-slate-700 font-semibold rounded-lg hover:bg-slate-100 transition text-sm">
+                            Cancel
+                        </button>
+                        <button type="submit" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-lg shadow-md transition text-sm flex items-center">
+                            <i class="fa-solid fa-lock mr-2 text-xs"></i> Authorize &amp; Place Order
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDER CONFIRMATION MODAL -->
+    <div id="confirmationModal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 text-center shadow-2xl border border-slate-200">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900">Order Confirmed!</h3>
+            <p class="text-xs text-slate-500 mt-1">Order #MED-<span id="orderIdDisplay">89342</span></p>
+
+            <div class="my-6 p-4 bg-slate-50 rounded-xl text-left border border-slate-200 text-xs space-y-2">
+                <div class="flex justify-between text-slate-600">
+                    <span>Estimated Delivery:</span>
+                    <span class="font-bold text-slate-800">Within 24-48 Hours</span>
+                </div>
+                <div class="flex justify-between text-slate-600">
+                    <span>Tracking Info:</span>
+                    <span class="text-brand-600 font-semibold">Sent to Email</span>
+                </div>
+                <div class="flex justify-between text-slate-600">
+                    <span>Compliance:</span>
+                    <span class="text-emerald-600 font-medium">FDA Medical Clearance Approved</span>
+                </div>
+            </div>
+
+            <p class="text-xs text-slate-500 mb-6">Thank you for relying on MedSupply Express for your clinical supplies. A detailed invoice has been generated.</p>
+
+            <button onclick="closeConfirmationModal()" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-md transition text-sm">
+                Return to Storefront
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification Popup -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center space-x-3 text-sm border border-slate-700 transform transition-all duration-300">
+        <div class="w-8 h-8 bg-brand-600 rounded-full flex items-center justify-center text-white flex-shrink-0">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <span id="toastMessage">Item added to cart</span>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Catalog Products Data
+        const products = [
+            {
+                id: 1,
+                name: "Premium Dual-Head Stethoscope",
+                category: "Diagnostic",
+                price: 89.99,
+                rating: 4.9,
+                reviews: 128,
+                stock: "In Stock",
+                popular: 98,
+                image: "https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=600&q=80",
+                description: "Professional grade stainless steel dual-head stethoscope with soft-sealing ear tips and high acoustic sensitivity for cardiovascular and respiratory diagnosis.",
+                specs: ["Tunable diaphragm", "Latex-free anatomical headset", "Acoustic rating: 9/10", "Includes spare ear-tips"]
+            },
+            {
+                id: 2,
+                name: "Nitrile Examination Gloves (Box of 100)",
+                category: "PPE",
+                price: 18.50,
+                rating: 4.8,
+                reviews: 310,
+                stock: "In Stock",
+                popular: 95,
+                image: "https://images.unsplash.com/photo-1584744982491-665216d95f8b?auto=format&fit=crop&w=600&q=80",
+                description: "Heavy-duty powder-free nitrile gloves offering tactile sensitivity and superior puncture resistance. Designed for clinical examinations and lab work.",
+                specs: ["Powder-free & Latex-free", "Textured fingertips for grip", "FDA 510(k) Cleared", "100 gloves per dispenser box"]
+            },
+            {
+                id: 3,
+                name: "3-Ply Surgical Face Masks (50 Pack)",
+                category: "PPE",
+                price: 14.99,
+                rating: 4.7,
+                reviews: 245,
+                stock: "In Stock",
+                popular: 90,
+                image: "https://images.unsplash.com/photo-1584634731339-252c581abfc5?auto=format&fit=crop&w=600&q=80",
+                description: "Fluid-resistant 3-layer surgical masks featuring high filtration meltblown layer, comfortable elastic ear loops, and adjustable metal nose clip.",
+                specs: ["BFE ≥ 98% filtration", "ASTM Level 2 compliant", "Hypoallergenic non-woven layer", "Box of 50 sterile masks"]
+            },
+            {
+                id: 4,
+                name: "Stainless Steel Trauma Shears / Scissors",
+                category: "Surgical",
+                price: 12.75,
+                rating: 4.9,
+                reviews: 89,
+                stock: "In Stock",
+                popular: 84,
+                image: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=600&q=80",
+                description: "7.5-inch professional medical bandage scissors with milled serrated blades to cut through tough materials such as seatbelts, leather, and heavy clothing.",
+                specs: ["Japanese Stainless Steel", "Blunt tip design for patient safety", "Autoclavable up to 290°F", "Ergonomic high-impact handles"]
+            },
+            {
+                id: 5,
+                name: "LED Diagnostic Medical Penlight",
+                category: "Diagnostic",
+                price: 9.99,
+                rating: 4.6,
+                reviews: 112,
+                stock: "In Stock",
+                popular: 79,
+                image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=600&q=80",
+                description: "Rechargeable aluminum alloy pupil penlight with pupil gauge chart and clip switch. Produces warm glare-free light ideal for neurological checks.",
+                specs: ["Warm white LED bulb", "Engraved pupil chart scale", "Concentric clip switch", "Batteries included"]
+            },
+            {
+                id: 6,
+                name: "Hypoallergenic Surgical Paper Tape (6 Rolls)",
+                category: "Wound Care",
+                price: 11.20,
+                rating: 4.8,
+                reviews: 76,
+                stock: "In Stock",
+                popular: 72,
+                image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?auto=format&fit=crop&w=600&q=80",
+                description: "Gentle, breathable microporous surgical tape engineered for secure dressing fixation on sensitive skin without causing tears or irritation upon removal.",
+                specs: ["1 inch x 10 yards per roll", "Latex-free & Hypoallergenic", "Leaves minimal residue", "Conformable to skin contours"]
+            },
+            {
+                id: 7,
+                name: "Sterile Adhesive Bandages & Gauze Kit",
+                category: "Wound Care",
+                price: 22.40,
+                rating: 4.7,
+                reviews: 164,
+                stock: "In Stock",
+                popular: 88,
+                image: "https://images.unsplash.com/photo-1603398938378-e54eab446dde?auto=format&fit=crop&w=600&q=80",
+                description: "Comprehensive wound management kit including sterile flexible fabric adhesive bandages, non-stick gauze pads, and stretch conforming roller bandages.",
+                specs: ["150 assortment pieces", "Water-resistant seal", "Absorbent non-stick pads", "Individual sterile wrapping"]
+            },
+            {
+                id: 8,
+                name: "Digital Fingertip Pulse Oximeter",
+                category: "Diagnostic",
+                price: 34.99,
+                rating: 4.9,
+                reviews: 420,
+                stock: "In Stock",
+                popular: 99,
+                image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80",
+                description: "Precision OLED blood oxygen saturation monitor (SpO2) and pulse rate reader with plethysmograph waveform indicator. Instant 5-second readings.",
+                specs: ["Dual-color OLED Display", "SpO2 accuracy: ±2%", "Auto power-off battery saver", "Includes lanyard & silicone case"]
+            }
+        ];
+
+        // Global State Variables
+        let cart = [];
+        let activeCategory = 'All';
+        let searchQuery = '';
+        let currentSort = 'popular';
+        let discountRate = 0;
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCartUI();
+        });
+
+        // Render Product Cards Grid
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            const noProducts = document.getElementById('noProductsFound');
+            
+            // Filter products
+            let filtered = products.filter(product => {
+                const matchesCategory = activeCategory === 'All' || product.category === activeCategory;
+                const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      product.description.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            // Sort products
+            if (currentSort === 'price-low') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (currentSort === 'price-high') {
+                filtered.sort((a, b) => b.price - a.price);
+            } else if (currentSort === 'rating') {
+                filtered.sort((a, b) => b.rating - a.rating);
+            } else if (currentSort === 'popular') {
+                filtered.sort((a, b) => b.popular - a.popular);
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noProducts.classList.remove('hidden');
+                return;
+            }
+
+            noProducts.classList.add('hidden');
+            grid.innerHTML = filtered.map(product => `
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col justify-between group">
+                    <div>
+                        <!-- Product Image Box -->
+                        <div class="relative bg-slate-100 overflow-hidden h-48 sm:h-52 cursor-pointer" onclick="openQuickView(${product.id})">
+                            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-brand-700 font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md shadow-xs border border-slate-200">
+                                ${product.category}
+                            </span>
+                            <span class="absolute top-3 right-3 bg-emerald-500 text-white font-semibold text-[10px] px-2 py-0.5 rounded-full shadow-xs">
+                                ${product.stock}
+                            </span>
+                        </div>
+
+                        <!-- Product Information -->
+                        <div class="p-5">
+                            <div class="flex items-center text-amber-400 text-xs mb-1.5 space-x-1">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="font-bold text-slate-800 ml-1">${product.rating}</span>
+                                <span class="text-slate-400">(${product.reviews})</span>
+                            </div>
+                            <h3 class="font-bold text-slate-900 text-base leading-snug cursor-pointer hover:text-brand-600 transition" onclick="openQuickView(${product.id})">
+                                ${product.name}
+                            </h3>
+                            <p class="text-slate-500 text-xs mt-2 line-clamp-2 leading-relaxed">
+                                ${product.description}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Card Footer / Purchase -->
+                    <div class="p-5 pt-0 mt-auto flex items-center justify-between border-t border-slate-100 pt-4">
+                        <div>
+                            <span class="text-xs text-slate-400 block font-medium">Price</span>
+                            <span class="text-xl font-extrabold text-slate-900">$${product.price.toFixed(2)}</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="openQuickView(${product.id})" class="p-2.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 transition" title="Quick View">
+                                <i class="fa-solid fa-eye text-sm"></i>
+                            </button>
+                            <button onclick="addToCart(${product.id})" class="px-3.5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-lg text-xs shadow-sm transition flex items-center space-x-1.5">
+                                <i class="fa-solid fa-cart-plus text-sm"></i>
+                                <span>Add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        <!-- Filter Functions -->
+        function filterByCategory(category) {
+            activeCategory = category;
+            
+            // Update UI Tab active states
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                if(btn.getAttribute('data-category') === category) {
+                    btn.className = "category-btn active px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition bg-brand-600 text-white shadow-sm";
+                } else {
+                    btn.className = "category-btn px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200";
+                }
+            });
+
+            updateFilterStatus();
+            renderProducts();
+        }
+
+        function handleSearch(val) {
+            searchQuery = val.trim();
+            const clearBtn = document.getElementById('clearSearchBtn');
+            if (searchQuery) {
+                clearBtn.classList.remove('hidden');
+                clearBtn.classList.add('flex');
+            } else {
+                clearBtn.classList.add('hidden');
+                clearBtn.classList.remove('flex');
+            }
+            updateFilterStatus();
+            renderProducts();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchInputMobile').value = '';
+            searchQuery = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            updateFilterStatus();
+            renderProducts();
+        }
+
+        function handleSort(val) {
+            currentSort = val;
+            renderProducts();
+        }
+
+        function updateFilterStatus() {
+            const filterStatus = document.getElementById('filterStatus');
+            const filterStatusText = document.getElementById('filterStatusText');
+            
+            if (activeCategory !== 'All' || searchQuery !== '') {
+                filterStatus.classList.remove('hidden');
+                let text = [];
+                if (activeCategory !== 'All') text.push(`Category: "${activeCategory}"`);
+                if (searchQuery) text.push(`Search: "${searchQuery}"`);
+                filterStatusText.innerText = text.join(' & ');
+            } else {
+                filterStatus.classList.add('hidden');
+            }
+        }
+
+        function resetFilters() {
+            activeCategory = 'All';
+            searchQuery = '';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchInputMobile').value = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            filterByCategory('All');
+        }
+
+        <!-- Shopping Cart Logic -->
+        function addToCart(productId, qty = 1) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.quantity += qty;
+            } else {
+                cart.push({ ...product, quantity: qty });
+            }
+
+            updateCartUI();
+            showToast(`Added "${product.name}" to cart`);
+        }
+
+        function updateCartQuantity(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (!item) return;
+
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                removeFromCart(productId);
+            } else {
+                updateCartUI();
+            }
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartItemsList = document.getElementById('cartItemsList');
+            const cartBadge = document.getElementById('cartBadge');
+            const cartCountBadge = document.getElementById('cartCountBadge');
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartBadge.innerText = totalItems;
+            cartCountBadge.innerText = `${totalItems} ${totalItems === 1 ? 'item' : 'items'}`;
+
+            if (cart.length === 0) {
+                cartItemsList.innerHTML = `
+                    <div class="text-center py-12 text-slate-400 space-y-3">
+                        <i class="fa-solid fa-basket-shopping text-4xl text-slate-300"></i>
+                        <p class="text-sm font-medium">Your medical supply cart is empty.</p>
+                        <button onclick="toggleCartModal(false)" class="text-xs text-brand-600 font-bold hover:underline">
+                            Browse Supplies Catalog
+                        </button>
+                    </div>
+                `;
+            } else {
+                cartItemsList.innerHTML = cart.map(item => `
+                    <div class="flex items-center space-x-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <img src="${item.image}" alt="${item.name}" class="w-14 h-14 object-cover rounded-lg border border-slate-200">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-xs font-bold text-slate-900 truncate">${item.name}</h4>
+                            <p class="text-xs text-brand-600 font-bold mt-0.5">$${item.price.toFixed(2)}</p>
+                            
+                            <div class="flex items-center space-x-2 mt-2">
+                                <button onclick="updateCartQuantity(${item.id}, -1)" class="w-5 h-5 bg-white border border-slate-300 rounded flex items-center justify-center text-xs font-bold text-slate-600 hover:bg-slate-100">-</button>
+                                <span class="text-xs font-semibold text-slate-800">${item.quantity}</span>
+                                <button onclick="updateCartQuantity(${item.id}, 1)" class="w-5 h-5 bg-white border border-slate-300 rounded flex items-center justify-center text-xs font-bold text-slate-600 hover:bg-slate-100">+</button>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs font-bold text-slate-900 block">$${(item.price * item.quantity).toFixed(2)}</span>
+                            <button onclick="removeFromCart(${item.id})" class="text-slate-400 hover:text-red-500 text-xs mt-2 transition">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Calculations
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const discount = subtotal * discountRate;
+            const discountedSubtotal = subtotal - discount;
+            const shipping = discountedSubtotal >= 99 || subtotal === 0 ? 0 : 12.50;
+            const tax = discountedSubtotal * 0.08;
+            const total = discountedSubtotal + shipping + tax;
+
+            document.getElementById('cartSubtotal').innerText = `$${subtotal.toFixed(2)}`;
+            document.getElementById('cartShipping').innerText = shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`;
+            document.getElementById('cartTax').innerText = `$${tax.toFixed(2)}`;
+            document.getElementById('cartTotal').innerText = `$${total.toFixed(2)}`;
+
+            if (discount > 0) {
+                document.getElementById('discountRow').classList.remove('hidden');
+                document.getElementById('cartDiscount').innerText = `-$${discount.toFixed(2)}`;
+            } else {
+                document.getElementById('discountRow').classList.add('hidden');
+            }
+
+            // Update Free Shipping Progress Bar
+            const threshold = 99;
+            const progress = Math.min((subtotal / threshold) * 100, 100);
+            document.getElementById('shippingProgressBar').style.width = `${progress}%`;
+            
+            if (subtotal >= threshold) {
+                document.getElementById('shippingDiffText').innerText = "Qualified for Free Express Delivery!";
+                document.getElementById('shippingDiffText').className = "text-emerald-600 font-bold";
+            } else {
+                const remaining = threshold - subtotal;
+                document.getElementById('shippingDiffText').innerText = `$${remaining.toFixed(2)} away`;
+                document.getElementById('shippingDiffText').className = "text-slate-600 font-medium";
+            }
+
+            // Disable checkout button if cart empty
+            document.getElementById('checkoutBtn').disabled = cart.length === 0;
+            document.getElementById('checkoutBtn').className = cart.length === 0 
+                ? "w-full py-3.5 bg-slate-300 text-slate-500 font-semibold rounded-xl cursor-not-allowed flex items-center justify-center space-x-2"
+                : "w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-md transition flex items-center justify-center space-x-2";
+        }
+
+        function applyPromoCode() {
+            const input = document.getElementById('promoInput').value.trim().toUpperCase();
+            const msg = document.getElementById('promoMessage');
+
+            if (input === 'MED10') {
+                discountRate = 0.10;
+                msg.innerText = "10% Medical Discount Applied!";
+                msg.className = "text-[11px] font-medium text-emerald-600 flex items-center";
+                msg.classList.remove('hidden');
+            } else if (input === 'CLINIC15') {
+                discountRate = 0.15;
+                msg.innerText = "15% Institutional Discount Applied!";
+                msg.className = "text-[11px] font-medium text-emerald-600 flex items-center";
+                msg.classList.remove('hidden');
+            } else {
+                discountRate = 0;
+                msg.innerText = "Invalid promo code. Try MED10";
+                msg.className = "text-[11px] font-medium text-red-500 flex items-center";
+                msg.classList.remove('hidden');
+            }
+            updateCartUI();
+        }
+
+        function toggleCartModal(show) {
+            const modal = document.getElementById('cartModal');
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        <!-- Quick View Modal Logic -->
+        function openQuickView(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const content = document.getElementById('quickViewContent');
+            content.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="bg-slate-100 rounded-xl overflow-hidden border border-slate-200 max-h-72 flex items-center justify-center">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <span class="bg-sky-100 text-brand-700 font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded">
+                                ${product.category}
+                            </span>
+                            <h3 class="text-xl font-bold text-slate-900 mt-1">${product.name}</h3>
+                            <div class="flex items-center text-amber-400 text-xs mt-1 space-x-1">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="font-bold text-slate-800">${product.rating}</span>
+                                <span class="text-slate-400">(${product.reviews} clinical reviews)</span>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-slate-600 leading-relaxed">${product.description}</p>
+
+                        <div>
+                            <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">Key Specifications</h4>
+                            <ul class="text-xs text-slate-600 space-y-1 list-disc pl-4">
+                                ${product.specs.map(spec => `<li>${spec}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-200 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-slate-400 block font-medium">Unit Price</span>
+                                <span class="text-2xl font-extrabold text-slate-900">$${product.price.toFixed(2)}</span>
+                            </div>
+                            <button onclick="addToCart(${product.id}); closeQuickView(); toggleCartModal(true);" class="px-5 py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl text-xs shadow-md transition flex items-center space-x-2">
+                                <i class="fa-solid fa-cart-plus"></i>
+                                <span>Add to Order</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('quickViewModal').classList.remove('hidden');
+        }
+
+        function closeQuickView() {
+            document.getElementById('quickViewModal').classList.add('hidden');
+        }
+
+        <!-- Checkout Workflow Logic -->
+        function openCheckoutModal() {
+            if (cart.length === 0) return;
+            toggleCartModal(false);
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const discount = subtotal * discountRate;
+            const discountedSubtotal = subtotal - discount;
+            const shipping = discountedSubtotal >= 99 ? 0 : 12.50;
+            const tax = discountedSubtotal * 0.08;
+            const total = discountedSubtotal + shipping + tax;
+
+            document.getElementById('checkoutSubtotal').innerText = `$${discountedSubtotal.toFixed(2)}`;
+            document.getElementById('checkoutShipping').innerText = shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`;
+            document.getElementById('checkoutTotal').innerText = `$${total.toFixed(2)}`;
+
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+        }
+
+        function handlePlaceOrder(event) {
+            event.preventDefault();
+            closeCheckoutModal();
+
+            // Set random Order ID
+            document.getElementById('orderIdDisplay').innerText = Math.floor(10000 + Math.random() * 90000);
+            document.getElementById('confirmationModal').classList.remove('hidden');
+
+            // Reset Cart
+            cart = [];
+            discountRate = 0;
+            document.getElementById('promoInput').value = '';
+            document.getElementById('promoMessage').classList.add('hidden');
+            updateCartUI();
+        }
+
+        function closeConfirmationModal() {
+            document.getElementById('confirmationModal').classList.add('hidden');
+        }
+
+        <!-- Toast Notifications -->
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').innerText = message;
+            toast.classList.remove('hidden');
+            
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
